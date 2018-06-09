@@ -16,14 +16,13 @@ Eloqua Python SDK wrapping Eloqua Rest API and Eloqua BULK API.
 setup(
     name='eloqua-python-sdk',
     version= '0.1',
-	url='https://source.developers.google.com/p/eloquamart/r/eloqua-python-sdk',
+	url='https://github.com/ignotas-petrulis/eloqua-python-sdk.git',
     author='Ignotas Petrulis',
     author_email='ignotas.petrulis@gmail.com',
     packages=['bulk', 'rest'],
     install_requires=[
         'requests'
     ],
-    keywords = ['Eloqua', 'BULK API' 'REST API'],
     description='Eloqua Python SDK',
     long_description=long_description
 )
