@@ -44,7 +44,8 @@ class Eloqua(object):
                 method_map = {
                     'create_activity_export': self.create_activity_export,
                     'create_export_sync': self.create_export_sync,
-                    'check_sync_status': self.check_sync_status
+                    'check_sync_status': self.check_sync_status,
+                    'get_synced_data': self.get_synced_data
                 }
                 result = method_map[method](*args, **kwargs)
             except EloquaException as e:
@@ -110,6 +111,7 @@ class Eloqua(object):
 
         return resp
 
+
     def create_export_sync(self, synced_instance_uri, callback_url=None):
         self.authenticate()
 
@@ -131,6 +133,18 @@ class Eloqua(object):
 
         response = self.get('https://secure.p03.eloqua.com/API/Bulk/2.0' + sync_uri, headers)
         return response
+
+
+    def get_synced_data(self, sync_uri, offset, batch_size):
+    	headers = {
+            'Accept': 'application/json',
+            'Authorization': "{token_type} {access_token}".format(
+                token_type=self.token_type, access_token=self.access_token)
+        }
+        response = self.get('https://secure.p03.eloqua.com/API/Bulk/2.0' + sync_uri + '/data?limit=' + str(batch_size) + '&offset=' + str(offset), headers)
+        return response
+
+
 
     def make_request(self, **kwargs):
         logger.info(u'{method} Request: {url}'.format(**kwargs))
@@ -177,4 +191,4 @@ class Eloqua(object):
         else:
             if r.status_code >= 400:
                 raise EloquaException(r.json())
-            return r.json()            
+            return r.json()   
