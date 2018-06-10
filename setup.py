@@ -1,6 +1,3 @@
-import os
-import sys
-
 try:
     from setuptools import setup
 except ImportError:
@@ -15,8 +12,8 @@ Eloqua Python SDK wrapping Eloqua Rest API and Eloqua BULK API.
 
 setup(
     name='eloqua-python-sdk',
-    version= '0.1.2',
-	url='https://github.com/ignotas-petrulis/eloqua-python-sdk.git',
+    version='0.1.3',
+    url='https://github.com/ignotas-petrulis/eloqua-python-sdk.git',
     author='Ignotas Petrulis',
     author_email='ignotas.petrulis@gmail.com',
     packages=['bulk', 'rest'],
