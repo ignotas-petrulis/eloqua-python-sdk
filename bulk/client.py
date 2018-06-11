@@ -75,8 +75,9 @@ class Eloqua(object):
                 self.valid_until - time.time() >= 60:
             return
 
-        basic_auth = b64encode(b'{client_id}:{client_secret}'.format(
-            client_id=self.client_id, client_secret=self.client_secret))
+        basic_auth = b64encode(bytes('{client_id}:{client_secret}'.format(
+            client_id=self.client_id,
+            client_secret=self.client_secret), 'utf-8'))
 
         headers = {
             'Content-Type': 'application/json',
