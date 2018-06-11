@@ -4,7 +4,7 @@ import logging
 
 from base64 import b64encode
 from requests.exceptions import RequestException
-from urllib import urlencode
+from urllib.parse import urlencode
 
 logger = logging.getLogger('eloqua.client')
 
