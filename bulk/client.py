@@ -4,7 +4,7 @@ import logging
 
 from base64 import b64encode
 from requests.exceptions import RequestException
-from urllib.parse import urlencode
+from urllib import urlencode
 
 logger = logging.getLogger('eloqua.client')
 
@@ -75,7 +75,7 @@ class Eloqua(object):
                 self.valid_until - time.time() >= 60:
             return
 
-        basic_auth = b64encode('{client_id}:{client_secret}'.format(
+        basic_auth = b64encode(b'{client_id}:{client_secret}'.format(
             client_id=self.client_id, client_secret=self.client_secret))
 
         headers = {
