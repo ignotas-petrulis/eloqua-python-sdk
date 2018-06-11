@@ -81,7 +81,7 @@ class Eloqua(object):
 
         headers = {
             'Content-Type': 'application/json',
-            'Authorization': 'Basic {auth}'.format(auth=basic_auth)
+            'Authorization': 'Basic {auth}'.format(auth=basic_auth.decode())
         }
 
         data = {
