@@ -1,0 +1,2 @@
+class EloquaRestClient(object):
+    pass
