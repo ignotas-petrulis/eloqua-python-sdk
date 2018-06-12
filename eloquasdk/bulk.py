@@ -8,6 +8,9 @@ from urllib.parse import urlencode
 
 logger = logging.getLogger('eloqua.client')
 
+LOGIN_URL = 'https://login.eloqua.com'
+API_VERSION = '2.0'
+
 
 class EloquaException(Exception):
     error_description = None
@@ -20,9 +23,6 @@ class EloquaException(Exception):
     def __str__(self):
         return "Eloqua API Error {}: {}".format(
             self.error, self.error_description)
-
-
-LOGIN_URL = 'https://login.eloqua.com'
 
 
 class EloquaBulkClient(object):
@@ -46,8 +46,8 @@ class EloquaBulkClient(object):
         for i in range(0, 3):
             try:
                 method_map = {
-                    'create_activity_export': self.create_activity_export,
-                    'create_export_sync': self.create_export_sync,
+                    'create_export': self.create_export,
+                    'create_sync': self.create_sync,
                     'check_sync_status': self.check_sync_status,
                     'get_synced_data': self.get_synced_data
                 }
@@ -101,7 +101,25 @@ class EloquaBulkClient(object):
         self.refresh_token = resp['refresh_token']
         self.valid_until = time.time() + resp['expires_in']
 
-    def create_activity_export(self, name, fields=None, filter=None):
+        headers = {
+            'Authorization': '{token_type} {access_token}'.format(
+                token_type=self.token_type, access_token=self.access_token
+            )
+        }
+
+        resp = self.get('{login_url}/id'.format(
+            login_url=LOGIN_URL), headers)
+
+        apis = resp['urls']['apis']
+        bulk = apis['rest']['bulk']
+        # removing last forward slash
+        bulk = bulk[:-1]
+        self.base_url = bulk.format(version=API_VERSION)
+
+    """
+    entity: accounts, activities, campaignResponses, contacts
+    """
+    def create_export(self, name, entity, fields=None, filter=None):
         self.authenticate()
 
         data = {
@@ -112,12 +130,16 @@ class EloquaBulkClient(object):
 
         headers = self.buildHeaders()
 
-        resp = self.post('https://secure.p03.eloqua.com/API/Bulk/2.0/' +
-                         'activities/exports', data, headers)
+        url = '{base_url}/{entity}/exports'.format(
+            base_url=self.base_url,
+            entity=entity
+        )
+
+        resp = self.post(url, data, headers)
 
         return resp
 
-    def create_export_sync(self, synced_instance_uri, callback_url=None):
+    def create_sync(self, synced_instance_uri, callback_url=None):
         self.authenticate()
 
         data = {
@@ -126,8 +148,9 @@ class EloquaBulkClient(object):
         }
 
         headers = self.buildHeaders()
-        resp = self.post('https://secure.p03.eloqua.com/API/Bulk/2.0/' +
-                         'syncs', data, headers)
+        url = '{base_url}/syncs'.format(base_url=self.base_url)
+
+        resp = self.post(url, data, headers)
         return resp
 
     def check_sync_status(self, sync_uri):
@@ -138,8 +161,12 @@ class EloquaBulkClient(object):
                 token_type=self.token_type, access_token=self.access_token)
         }
 
-        resp = self.get('https://secure.p03.eloqua.com/API/Bulk/2.0' +
-                        sync_uri, headers)
+        url = '{base_url}{sync_uri}'.format(
+            base_url=self.base_url,
+            sync_uri=sync_uri
+        )
+
+        resp = self.get(url, headers)
         return resp
 
     def get_synced_data(self, sync_uri, offset, batch_size):
