@@ -16,7 +16,7 @@ setup(
     url='https://github.com/ignotas-petrulis/eloqua-python-sdk.git',
     author='Ignotas Petrulis',
     author_email='ignotas.petrulis@gmail.com',
-    packages=['bulk', 'rest'],
+    packages=['eloquasdk'],
     install_requires=[
         'requests'
     ],
