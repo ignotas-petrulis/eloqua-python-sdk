@@ -25,7 +25,7 @@ class EloquaException(Exception):
 LOGIN_URL = 'https://login.eloqua.com'
 
 
-class Eloqua(object):
+class EloquaBulkClient(object):
 
     access_token = None
     expires_in = None
