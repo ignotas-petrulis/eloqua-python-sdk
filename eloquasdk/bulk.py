@@ -49,7 +49,8 @@ class EloquaBulkClient(object):
                     'create_export': self.create_export,
                     'create_sync': self.create_sync,
                     'check_sync_status': self.check_sync_status,
-                    'get_synced_data': self.get_synced_data
+                    'get_synced_data': self.get_synced_data,
+                    'get_fields': self.get_fields
                 }
                 result = method_map[method](*args, **kwargs)
             except EloquaException as e:
@@ -176,10 +177,31 @@ class EloquaBulkClient(object):
             'Authorization': "{token_type} {access_token}".format(
                 token_type=self.token_type, access_token=self.access_token)
         }
-        response = self.get('https://secure.p03.eloqua.com/API/Bulk/2.0' +
-                            sync_uri + '/data?limit=' + str(batch_size) +
-                            '&offset=' + str(offset), headers)
-        return response
+
+        url = '{base_url}{sync_uri}/data?limit={limit}&offset={offset}'.format(
+            base_url=self.base_url,
+            sync_uri=self.sync_uri,
+            limit=batch_size,
+            offset=offset)
+
+        resp = self.get(url, headers)
+
+        return resp
+
+    def get_fields(self, entity):
+        headers = {
+            'Accept': 'application/json',
+            'Authorization': "{token_type} {access_token}".format(
+                token_type=self.token_type, access_token=self.access_token)
+        }
+
+        url = '{base_url}/{entity}/fields'.format(
+            base_url=self.base_url,
+            entity=entity)
+
+        resp = self.get(url, headers)
+
+        return resp
 
     def make_request(self, **kwargs):
         logger.info(u'{method} Request: {url}'.format(**kwargs))
