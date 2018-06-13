@@ -195,7 +195,9 @@ class EloquaBulkClient(object):
                 token_type=self.token_type, access_token=self.access_token)
         }
 
-        url = '{base_url}/{entity}/fields'
+        url = '{base_url}/{entity}/fields'.format(
+            base_url=self.base_url,
+            entity=entity)
 
         resp = self.get(url, headers)
 
