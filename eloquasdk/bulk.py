@@ -49,7 +49,8 @@ class EloquaBulkClient(object):
                     'create_export': self.create_export,
                     'create_sync': self.create_sync,
                     'check_sync_status': self.check_sync_status,
-                    'get_synced_data': self.get_synced_data
+                    'get_synced_data': self.get_synced_data,
+                    'get_fields': self.get_fields
                 }
                 result = method_map[method](*args, **kwargs)
             except EloquaException as e:
