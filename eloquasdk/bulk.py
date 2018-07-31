@@ -180,7 +180,7 @@ class EloquaBulkClient(object):
 
         url = '{base_url}{sync_uri}/data?limit={limit}&offset={offset}'.format(
             base_url=self.base_url,
-            sync_uri=self.sync_uri,
+            sync_uri=sync_uri,
             limit=batch_size,
             offset=offset)
 
