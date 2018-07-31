@@ -78,7 +78,7 @@ class EloquaBulkClient(object):
 
         basic_auth = b64encode(bytes('{client_id}:{client_secret}'.format(
             client_id=self.client_id,
-            client_secret=self.client_secret), 'utf-8'))
+            client_secret=self.client_secret)))
 
         headers = {
             'Content-Type': 'application/json',
