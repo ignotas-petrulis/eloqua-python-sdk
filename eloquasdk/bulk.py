@@ -210,10 +210,9 @@ class EloquaBulkClient(object):
 
         resp = requests.request(**kwargs)
 
-        logger.info(u'{method} response: {status} {text}'.format(
+        logger.info(u'{method} response: {status}'.format(
                     method=kwargs['method'],
-                    status=resp.status_code,
-                    text=resp.text))
+                    status=resp.status_code))
 
         return resp
 
