@@ -12,7 +12,7 @@ Eloqua Python SDK wrapping Eloqua Rest API and Eloqua BULK API.
 
 setup(
     name='eloqua-python-sdk',
-    version='0.2.2',
+    version='0.2.3',
     url='https://github.com/ignotas-petrulis/eloqua-python-sdk.git',
     author='Ignotas Petrulis',
     author_email='ignotas.petrulis@gmail.com',
